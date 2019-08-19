@@ -5,11 +5,54 @@ using std::string;
 
 string IntToString(int x) {
   // TODO - you fill in here.
-  return "";
+  string result;
+  char new_ch;
+  bool flag = false;
+  long long y = (long long) x;
+
+  if(y==0){
+    result = "0";
+    return result;
+  }
+
+  if(y<0){
+    y=y*(-1);
+    flag = true;
+  }
+
+  while(y!=0){
+    new_ch = '0'+(y%10);
+    result.insert(0, 1, new_ch);
+    y=y/10;
+  }
+
+  if(flag){
+    new_ch = '-';
+    result.insert(0, 1, new_ch);
+  }
+
+  std::cout<<"int to string: "<<result<<std::endl;
+  return result;
 }
+
 int StringToInt(const string& s) {
-  // TODO - you fill in here.
-  return 0;
+  int result=0, start=0;
+  if(s[0]=='-')
+    start = 1;
+  else
+    start=0;
+
+  for(int i=start; i<s.size(); ++i){
+    int diff = s[i]-'0';
+    result = (result * 10) + diff;
+//    std::cout<<"diff: "<<diff<<" result: "<<result<<std::endl;
+  }
+
+  std::cout<<"string to int "<<result<<std::endl;
+  if(start==0)
+    return result;
+  else
+    return -1*result;
 }
 void Wrapper(int x, const string& s) {
   if (IntToString(x) != s) {

@@ -14,11 +14,40 @@ struct Coordinate {
 
   int x, y;
 };
+
+
+bool SearchMazeHelper(vector<vector<Color>>& maze, const Coordinate& s,
+                const Coordinate& e, vector<Coordinate>& result) {
+//	auto& maze = *maze_ptr;
+	if (s.x <0 || s.x >= maze.size() || s.y < 0 || s.y >= maze[s.x].size() || maze[s.x][s.y] != kWhite)
+		return false;
+
+//	auto& result = *result_ptr;
+	result.emplace_back(s);
+	maze[s.x][s.y] = kBlack;
+
+	if(s==e){
+		return true;
+	}
+
+	for(const Coordinate& next_move: {Coordinate{s.x, s.y+1}, Coordinate{s.x, s.y-1}, Coordinate{s.x+1, s.y}, Coordinate{s.x-1, s.y}}){
+		if(SearchMazeHelper(maze, next_move, e, result))
+			return true;
+	}
+	result.pop_back();
+	return false;
+}
+
+
 vector<Coordinate> SearchMaze(vector<vector<Color>> maze, const Coordinate& s,
                               const Coordinate& e) {
   // TODO - you fill in here.
-  return {};
+	vector<Coordinate> result;
+	SearchMazeHelper(maze, s, e, result);
+
+  return result;
 }
+
 template <>
 struct SerializationTraits<Color> : SerializationTraits<int> {
   using serialization_type = Color;

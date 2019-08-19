@@ -9,10 +9,36 @@ using std::array;
 using std::stack;
 using std::vector;
 const int kNumPegs = 3;
+
+void HanoiHelper(int num_rings, vector<vector<int>>& res, int src, int des){
+
+  if(num_rings == 1){
+    res.push_back({src, des});
+  }
+  else{
+    // move n-1 rings from A -> C
+    int temp_des = 3 - src - des;
+    HanoiHelper(num_rings-1, res, src, temp_des);
+
+    // move nth ring from A->B
+    res.push_back({src,des});
+
+    // move n-1 rings from C->B
+    HanoiHelper(num_rings-1, res, temp_des, des);
+
+  }
+
+  return ;
+}
+
 vector<vector<int>> ComputeTowerHanoi(int num_rings) {
   // TODO - you fill in here.
-  return {};
+  vector<vector<int>> result;
+  HanoiHelper(num_rings, result, 0, 1);
+
+  return result;
 }
+
 void ComputeTowerHanoiWrapper(TimedExecutor& executor, int num_rings) {
   array<stack<int>, kNumPegs> pegs;
   for (int i = num_rings; i >= 1; --i) {
