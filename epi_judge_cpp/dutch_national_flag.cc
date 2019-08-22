@@ -9,7 +9,18 @@ typedef enum { kRed, kWhite, kBlue } Color;
 void DutchFlagPartition(int pivot_index, vector<Color>* A_ptr) {
   // TODO - you fill in here.
   std::vector<Color> &v = *A_ptr;
-  
+  int red_count = 0, blue_count = 0, white_count = 0;
+
+  for(auto &a: v){
+    if (a==kRed)
+      red_count++;
+    else if(a==kWhite)
+      white_count++;
+    else if(a==kBlue)
+      blue_count++;
+  }
+
+  for(int i = 0)
 
 // swap pivot_index 
 

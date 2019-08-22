@@ -3,7 +3,20 @@
 using std::vector;
 double BuyAndSellStockOnce(const vector<double>& prices) {
   // TODO - you fill in here.
-  return 0.0;
+	int start = 0;
+	double max = 0;
+
+	for(int i=1; i<prices.size(); ++i){
+		if(prices[i]<prices[start]){
+			start = i;
+			continue;
+		}
+		double diff = prices[i]-prices[start];
+		if(diff>max)
+			max = diff;
+
+	}
+  return max;
 }
 
 int main(int argc, char* argv[]) {

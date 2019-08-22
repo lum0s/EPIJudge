@@ -1,3 +1,4 @@
+#include <unordered_set>
 #include "binary_tree_with_parent_prototype.h"
 #include "test_framework/binary_tree_utils.h"
 #include "test_framework/generic_test.h"
@@ -6,7 +7,29 @@
 
 BinaryTreeNode<int>* LCA(const unique_ptr<BinaryTreeNode<int>>& node0,
                          const unique_ptr<BinaryTreeNode<int>>& node1) {
+
   // TODO - you fill in here.
+  if(node0==nullptr || node1==nullptr)
+    return nullptr;
+
+  BinaryTreeNode<int>* ptr1 = node0.get();
+  BinaryTreeNode<int>* ptr2 = node1.get();
+  std::unordered_set<BinaryTreeNode<int>*> m;
+
+  while(ptr1!=NULL){
+    m.emplace(ptr1);
+    ptr1 = ptr1->parent;
+  }
+
+  while(ptr2!=NULL){
+    if(m.find(ptr2)!=m.end())
+      return ptr2;
+    else{
+      ptr2=ptr2->parent;
+    }
+  }
+
+
   return nullptr;
 }
 int LcaWrapper(TimedExecutor& executor,

@@ -1,23 +1,78 @@
 #include <vector>
+#include <queue>
+#include <list>
+#include <unordered_map>
 #include "test_framework/generic_test.h"
 #include "test_framework/serialization_traits.h"
 #include "test_framework/test_failure.h"
 
+using namespace std;
 class LruCache {
  public:
-  LruCache(size_t capacity) {}
+  LruCache(size_t capacity) {
+    cache_capacity = capacity;
+  }
+
   int Lookup(int isbn) {
+    unordered_map<int, pair<list<int>::iterator, int>>::iterator it;
+
+    it = m.find(isbn);
+    if(it!=m.end()){
+      cache.erase((it->second).first);
+      cache.push_front(isbn);
+      (it->second).first = cache.begin(); 
+      return (it->second).second;
+    }
+    else{
+      return -1;
+    }
     // TODO - you fill in here.
     return 0;
   }
   void Insert(int isbn, int price) {
-    // TODO - you fill in here.
+    unordered_map<int, pair<list<int>::iterator, int>>::iterator it;
+
+    it = m.find(isbn);
+    if(it!=m.end()){
+      cache.erase((it->second).first);
+      cache.push_front(isbn);
+      (it->second).first = cache.begin(); 
+    }
+    else{
+      if(m.size()<cache_capacity){
+        cache.push_front(isbn);
+        m[isbn] = {begin(cache), price};
+      }
+      else{
+        int temp_isbn = cache.back();
+        m.erase(temp_isbn);
+        cache.pop_back();
+        cache.push_front(isbn);
+        m[isbn] = {begin(cache), price};
+      }
+    }
+
     return;
   }
   bool Erase(int isbn) {
-    // TODO - you fill in here.
-    return true;
+    unordered_map<int, pair<list<int>::iterator, int>>::iterator it;
+
+    it = m.find(isbn);
+    if(it!=m.end()){
+      cache.erase((it->second).first);
+      m.erase(it);
+      return true; 
+    }
+    else{
+      return false;
+    }
   }
+
+private:
+  
+  unordered_map<int, pair<list<int>::iterator, int>>m;
+  int cache_capacity;
+  list<int> cache;
 };
 struct Op {
   std::string code;
