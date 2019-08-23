@@ -14,7 +14,7 @@ struct Q_pair{
 
 struct Comparator{
 	bool operator()(const Q_pair& lhs, const Q_pair& rhs){
-		return lhs.count<rhs.count;
+		return lhs.count>rhs.count;
 	}
 };
 
@@ -43,6 +43,7 @@ int dist(const string& s, const string& t){
 int dijkstra(unordered_map<string, vector<string>>& m, const string& s, const string& t){
 
 	priority_queue<Q_pair, vector<Q_pair>, Comparator> q;
+	unordered_set<string> visited;
 
 	int counter = 0;
 	q.push({counter, s});
@@ -51,7 +52,11 @@ int dijkstra(unordered_map<string, vector<string>>& m, const string& s, const st
 
 		Q_pair current = q.top();
 		q.pop();
-		cout<<"Q: str pop: "<<current.s<<" count:"<<current.count<<endl;
+		if(visited.find(current.s)!=visited.end())
+			continue;
+
+		visited.emplace(current.s);
+//		cout<<"Q: str pop: "<<current.s<<" count:"<<current.count<<endl;
 
 		if(t.compare(current.s)==0){
 			return current.count;
@@ -75,11 +80,11 @@ int TransformString(unordered_set<string> D, const string& s, const string& t) {
 
 	//make the graph
 
-	for(auto &e: D){
-		cout<<e<<" ";
-	}
+	// for(auto &e: D){
+	// 	cout<<e<<" ";
+	// }
 
-	cout<<endl;
+	// cout<<endl;
 
 	if(s.empty() || t.empty() || D.empty())
 		return -1;
@@ -95,17 +100,17 @@ int TransformString(unordered_set<string> D, const string& s, const string& t) {
 			if(x==1){
 				m[*it1].push_back(*it2);
 				m[*it2].push_back(*it1);
-				cout<<"Actual graph "<<*it1<<" "<<*it2<<endl;
+//				cout<<"Actual graph "<<*it1<<" "<<*it2<<endl;
 
 			}
 		}
 	}
 
-	cout<<"Finished making graph"<<endl;
+//	cout<<"Finished making graph"<<endl;
 
 	int res = dijkstra(m, s, t);
 
-	cout<<"Returning from dijkstra"<<endl;
+//	cout<<"Returning from dijkstra"<<endl;
 
   return res;
 }
