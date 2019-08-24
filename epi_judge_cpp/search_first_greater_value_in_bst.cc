@@ -3,11 +3,29 @@
 #include "test_framework/generic_test.h"
 using std::unique_ptr;
 
+
 BstNode<int>* FindFirstGreaterThanK(const unique_ptr<BstNode<int>>& tree,
                                     int k) {
   // TODO - you fill in here.
-  return nullptr;
+  BstNode<int>* ptr = tree.get();
+  BstNode<int>* res;
+  res->data = -1;
+
+  int max = -1;
+  while(ptr!=NULL){
+    if(ptr->data <= k){
+      ptr=(ptr->right).get();
+    }
+    else{
+      max = ptr->data;
+      res = ptr;
+      ptr=(ptr->left).get();
+    }
+  }
+  
+  return res;
 }
+
 int FindFirstGreaterThanKWrapper(const unique_ptr<BstNode<int>>& tree, int k) {
   auto result = FindFirstGreaterThanK(tree, k);
   return result ? result->data : -1;
